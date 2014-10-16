@@ -1,9 +1,14 @@
 package edu.sharif.helloworld.hello;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -11,6 +16,19 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Button hello_button = (Button) findViewById(R.id.hello_button);
+        final EditText editText = (EditText) findViewById(R.id.editText);
+
+        hello_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, secondpage.class);
+                //send data with intent
+                intent.putExtra("message", editText.getText().toString());
+                startActivity(intent);
+            }
+        });
     }
 
 

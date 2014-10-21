@@ -10,7 +10,7 @@
     android:weightSum="1">
 
 
-    <EditText
+<!--    <EditText
         android:layout_width="422dp"
         android:layout_height="56dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -22,5 +22,6 @@
         android:layout_height="wrap_content"
         android:text="@string/hello_world"
         android:id="@+id/hello_button" />
+-->
 
 </LinearLayout>

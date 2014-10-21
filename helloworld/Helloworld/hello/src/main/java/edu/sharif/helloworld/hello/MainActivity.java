@@ -16,7 +16,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+/*
         Button hello_button = (Button) findViewById(R.id.hello_button);
         final EditText editText = (EditText) findViewById(R.id.editText);
 
@@ -29,6 +29,7 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
+        */
     }
 
 

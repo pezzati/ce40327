@@ -8,5 +8,9 @@
     <string name="title_activity_main_activity2">MainActivity</string>
     <string name="title_activity_secondpage">secondpage</string>
     <string name="type_message">Type your message</string>
+    <string name="save">save</string>
+    <string name="username">username</string>
+    <string name="wake">Wake Someone</string>
+    <string name="call">Call me</string>
 
 </resources>

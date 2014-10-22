@@ -1,3 +1,5 @@
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -9,6 +11,8 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="edu.sharif.helloworld.hello.MainActivity"
     android:weightSum="1">
+
+
 
 
 <!--    <EditText
@@ -26,6 +30,8 @@
 -->
 
 
+
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -38,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="@string/username"
+            android:hint="@string/username"
             android:ems="10"
             android:layout_marginTop="20dp"
             android:id="@+id/user_field" />
@@ -47,7 +53,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:text="Password"
             android:ems="10"
             android:id="@+id/pass_field"
             android:layout_gravity="center_horizontal" />
@@ -65,7 +70,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.50"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:orientation="vertical"
@@ -74,13 +80,47 @@
             android:layout_weight="0.5">
 
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/date_picker" />
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/time_picker"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/call"
+                android:id="@+id/callMe_button"
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"></LinearLayout>
+            android:layout_weight="0.5"
+            android:weightSum="1"
+            android:paddingTop="100dp">
+
+            <Button
+                android:layout_width="128dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circule_button"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/wake"
+                android:textColor="#fff"
+                android:layout_weight="0.23"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

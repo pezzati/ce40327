@@ -30,6 +30,15 @@ public class MainActivity extends ActionBarActivity {
             }
         });
         */
+
+        final EditText user_text = (EditText) findViewById(R.id.user_field);
+        user_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                user_text.setText("");
+            }
+        });
+        EditText pass_test = (EditText) findViewById(R.id.pass_field);
     }
 
 

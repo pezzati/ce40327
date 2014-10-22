@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.sharif.helloworld.hello" >
-<!-- TODO find good picture for action image-->
+<!-- TODO find good picture for actionbar image-->
+<!-- TODO permission for calling-->
+<!-- TODO permission for use Internet-->
     <application
         android:allowBackup="true"
 

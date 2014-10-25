@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -21,21 +22,14 @@ import android.widget.Toast;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Calendar;
-import java.util.Objects;
 
 public class MainActivity extends ActionBarActivity {
     private int pYear;
@@ -60,8 +54,10 @@ public class MainActivity extends ActionBarActivity {
     private EditText phone_text;
     static final int DATE_DIALOG = 0;
 
+    private Button wakeUp_button;
 
-    private class Get extends AsyncTask<String, Object, Object>{
+
+    private class Get_call extends AsyncTask<String, Object, Object>{
 
         private HttpClient httpClient;
         private String url;
@@ -97,7 +93,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(Object o) {
             String input = (String) o;
-            System.out.println("###" + input);
+            //System.out.println("###" + input);
             if(input == null){
                 Toast.makeText(getApplicationContext(), "Something was wrong. Please try later", Toast.LENGTH_SHORT).show();
                 return;
@@ -112,8 +108,62 @@ public class MainActivity extends ActionBarActivity {
                     return;
                 }
                 if(input.equals("3")){
-                    Toast.makeText(getApplicationContext(), "Username or Password is incorrect", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Some of the parameters are wrong", Toast.LENGTH_LONG).show();
                     return;
+                }
+            }
+        }
+    }
+
+
+    private class Get_wake extends AsyncTask<String, Object, Object>{
+        HttpClient httpClient;
+        String url;
+        @Override
+        protected void onPreExecute() {
+            httpClient = new DefaultHttpClient();
+            url = "http://wake.huri.ir/call/?user=";
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String res = "";
+            InputStream inputStream;
+            url = url + URLEncoder.encode(strings[0]) + "&pass=" + URLEncoder.encode(strings[1]);
+            try {
+                HttpResponse httpResponse = httpClient.execute(new HttpGet(url));
+                inputStream = httpResponse.getEntity().getContent();
+                if(inputStream == null){
+                    System.out.println("Error!!!! inputStream is null");
+                    res = null;
+                }
+                else{
+                    res = convertInputStreamToString(inputStream);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Exception in sending req" + e.getMessage());
+            }
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            String input = (String) o;
+            if(input == null){
+                Toast.makeText(getApplicationContext(), "Something was wrong. Please try later.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else{
+                if(input.equals("0")){
+                    Toast.makeText(getApplicationContext(), "No phone number received", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                else {
+                    Intent intent_call = new Intent();
+                    intent_call.setAction(Intent.ACTION_CALL);
+                    intent_call.setData(Uri.parse("tel:" + input));
+                    startActivity(intent_call);
                 }
             }
         }
@@ -265,13 +315,25 @@ public class MainActivity extends ActionBarActivity {
                     return;
                 }
                 else{
-                    Get get = new Get();
-                    get.execute(new String[] {sharedPreferences.getString("user",""),
+                    Get_call getCall = new Get_call();
+                    getCall.execute(new String[] {sharedPreferences.getString("user",""),
                                             sharedPreferences.getString("password",""),
                                             String.valueOf(pYear) + "-" +String.valueOf(pMonth + 1) + "-" + String.valueOf(pDay),
                                             String.valueOf(hour) + "-" +String.valueOf(min),
                                             phone_text.getText().toString()});
                 }
+
+            }
+        });
+
+        //Wake
+        wakeUp_button = (Button) findViewById(R.id.wakeUp_button);
+        wakeUp_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Get_wake getWake = new Get_wake();
+                getWake.execute(new String[] {sharedPreferences.getString("user",""),
+                        sharedPreferences.getString("password","")});
 
             }
         });

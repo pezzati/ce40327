@@ -28,8 +28,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -66,13 +70,13 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPreExecute() {
             httpClient = new DefaultHttpClient();
-            url = "‫=‪http://wake.huri.ir/wake/?user‬‬";
+            url = "http://wake.huri.ir/wake/?user=";
         }
 
         @Override
         protected String doInBackground(String... strings) {
             String res = "";
-            url = url + strings[0] + "‫=‪&pass‬‬" + strings[1] + "‫=‪&d‬‬" + strings[2] + "‫=‪&t‬‬" + strings[3] + "‫=‪&p‬‬" + strings[4];
+            url = url + URLEncoder.encode(strings[0]) + "&pass=" + URLEncoder.encode(strings[1]) + "&d=" + URLEncoder.encode(strings[2]) + "&t=" + URLEncoder.encode(strings[3]) + "&p=" + URLEncoder.encode(strings[4]);
             try {
                 HttpResponse httpResponse = httpClient.execute(new HttpGet(url));
                 inputStream = httpResponse.getEntity().getContent();
@@ -93,20 +97,21 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(Object o) {
             String input = (String) o;
-            if(input != null){
+            System.out.println("###" + input);
+            if(input == null){
                 Toast.makeText(getApplicationContext(), "Something was wrong. Please try later", Toast.LENGTH_SHORT).show();
                 return;
             }
             else{
-                if(input == "1"){
+                if(input.equals("1")){
                     Toast.makeText(getApplicationContext(), "Your Wake up call request Accepted", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(input == "2"){
+                if(input.equals("2")){
                     Toast.makeText(getApplicationContext(), "Username or Password is incorrect", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(input == "3"){
+                if(input.equals("3")){
                     Toast.makeText(getApplicationContext(), "Username or Password is incorrect", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -115,7 +120,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    // convert inputstream to String
+    // convert inputStream to String
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
         String line = "";

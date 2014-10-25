@@ -13,5 +13,7 @@
     <string name="wake">Wake \n Someone</string>
     <string name="call">Call me</string>
     <string name="title_activity_log_in">log_in</string>
+    <string name="phone">Phone Number</string>
+    <string name="user_pass_saved">User name and Passworrd saved</string>
 
 </resources>

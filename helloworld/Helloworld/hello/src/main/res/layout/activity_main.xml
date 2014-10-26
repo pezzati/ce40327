@@ -31,66 +31,6 @@
 -->
 
 
-
-
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.50"
-        android:id="@+id/login_layout">
-
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"></LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.4"
-            android:paddingTop="20dp"
-            android:id="@+id/login_info_layout">
-
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="@string/username"
-                android:ems="10"
-                android:layout_marginTop="20dp"
-                android:id="@+id/user_field" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:ems="10"
-                android:id="@+id/pass_field"
-                android:layout_gravity="center_horizontal" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/save"
-                android:id="@+id/save_button"
-                android:layout_gravity="center_horizontal" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"></LinearLayout>
-    </LinearLayout>
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -125,11 +65,10 @@
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="match_parent"
+                    android:layout_width="111dp"
                     android:layout_height="match_parent"
                     android:text="Button"
-                    android:id="@+id/date_button"
-                    android:layout_weight="0.6" />
+                    android:id="@+id/date_button" />
 
             </LinearLayout>
 

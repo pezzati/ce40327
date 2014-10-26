@@ -4,7 +4,7 @@
     tools:context="edu.sharif.helloworld.hello.MainActivity" >
     
     <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+        android:title="@string/action_log_in"
         android:orderInCategory="100"
         app:showAsAction="never"
         android:icon="@drawable/wakeup"/>

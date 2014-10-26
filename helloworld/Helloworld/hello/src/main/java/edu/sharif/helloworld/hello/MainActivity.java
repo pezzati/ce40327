@@ -3,9 +3,7 @@ package edu.sharif.helloworld.hello;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -31,13 +29,20 @@ import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.util.Calendar;
 
+
+//TODO Today button in dialog
+
+
 public class MainActivity extends ActionBarActivity {
+
+    private String user_name;
+    private String password;
+
     private int pYear;
     private int pMonth;
     private int pDay;
     private int hour;
     private int min;
-
 
     private Button date_button;
     private TextView date_textview;
@@ -194,6 +199,7 @@ public class MainActivity extends ActionBarActivity {
         }
     };
 
+
     private void updateDisplay(){
         date_textview.setText(new StringBuilder()
                 // Month is 0 based so add 1
@@ -203,39 +209,37 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
+    private void today(){
+        Calendar calendar = Calendar.getInstance();
+        pYear = calendar.get(Calendar.YEAR);
+        pMonth = calendar.get(Calendar.MONTH);
+        pDay = calendar.get(Calendar.DAY_OF_MONTH);
+        updateDisplay();
+        switch (calendar.get(Calendar.AM_PM)){
+            case Calendar.AM:
+                hour = calendar.get(Calendar.HOUR);
+                break;
+            case Calendar.PM:
+                hour = (calendar.get(Calendar.HOUR) + 12) % 24;
+        }
+        min = calendar.get(Calendar.MINUTE);
+        hour_textview.setText(new StringBuilder().append(hour));
+        min_textview.setText(new StringBuilder().append(min));
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        //login
-        final EditText user_text = (EditText) findViewById(R.id.user_field);
-        final EditText pass_text = (EditText) findViewById(R.id.pass_field);
-        Button save_button = (Button) findViewById(R.id.save_button);
+        //Get username and password from intent
+        user_name = getIntent().getStringExtra("user");
+        password = getIntent().getStringExtra("password");
 
 
-        if(sharedPreferences.contains("user") && sharedPreferences.contains("password")){
-            user_text.setText(sharedPreferences.getString("user", ""));
-            pass_text.setText(sharedPreferences.getString("password", ""));
-        }
 
-        save_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String user_name = String.valueOf(user_text.getText());
-                final String password = String.valueOf(pass_text.getText());
-                editor.putString("user",user_name);
-                editor.putString("password", password);
-                editor.commit();
-                Toast.makeText(getApplicationContext(), "Username and Password saved", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        //set date
+        //date
         date_textview = (TextView) findViewById(R.id.date_textview);
         date_button = (Button) findViewById(R.id.date_button);
         date_button.setOnClickListener(new View.OnClickListener() {
@@ -246,11 +250,6 @@ public class MainActivity extends ActionBarActivity {
         });
 
         final Calendar calendar = Calendar.getInstance();
-        pYear = calendar.get(Calendar.YEAR);
-        pMonth = calendar.get(Calendar.MONTH);
-        pDay = calendar.get(Calendar.DAY_OF_MONTH);
-        updateDisplay();
-
 
         //time
         inc_hour = (Button) findViewById(R.id.inc_hour_button);
@@ -293,16 +292,8 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        switch (calendar.get(Calendar.AM_PM)){
-            case Calendar.AM:
-                hour = calendar.get(Calendar.HOUR);
-                break;
-            case Calendar.PM:
-                hour = (calendar.get(Calendar.HOUR) + 12) % 24;
-        }
-        min = calendar.get(Calendar.MINUTE);
-        hour_textview.setText(new StringBuilder().append(hour));
-        min_textview.setText(new StringBuilder().append(min));
+        //Set date and time of NOW!!!
+        today();
 
         //Call
         phone_text = (EditText) findViewById(R.id.phone_number_text);
@@ -316,8 +307,8 @@ public class MainActivity extends ActionBarActivity {
                 }
                 else{
                     Get_call getCall = new Get_call();
-                    getCall.execute(new String[] {sharedPreferences.getString("user",""),
-                                            sharedPreferences.getString("password",""),
+                    getCall.execute(new String[] {user_name,
+                                            password,
                                             String.valueOf(pYear) + "-" +String.valueOf(pMonth + 1) + "-" + String.valueOf(pDay),
                                             String.valueOf(hour) + "-" +String.valueOf(min),
                                             phone_text.getText().toString()});
@@ -332,15 +323,12 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 Get_wake getWake = new Get_wake();
-                getWake.execute(new String[] {sharedPreferences.getString("user",""),
-                        sharedPreferences.getString("password","")});
+                getWake.execute(new String[] {user_name,password});
 
             }
         });
 
     }
-
-
 
 
     @Override
@@ -363,6 +351,7 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -370,6 +359,8 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            Intent log_intent = new Intent(MainActivity.this, log_in.class);
+            this.startActivity(log_intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -379,5 +370,19 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public FragmentManager getFragmentManager() {
         return super.getFragmentManager();
+    }
+
+
+    @Override
+    protected void onStart() {
+        today();
+        super.onStart();
+    }
+
+
+    @Override
+    protected void onRestart() {
+        today();
+        super.onRestart();
     }
 }

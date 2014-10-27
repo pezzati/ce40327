@@ -103,6 +103,7 @@ public class MainActivity extends ActionBarActivity {
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Exception in sending req" + e.getMessage());
+                Toast.makeText(getApplicationContext(),"Check your network connection", Toast.LENGTH_LONG).show();
             }
             return res;
         }

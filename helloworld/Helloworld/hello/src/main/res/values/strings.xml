@@ -18,5 +18,7 @@
     <string name="select_date">select</string>
     <string name="action_log_in">Username</string>
     <string name="log_in">Login</string>
+    <string name="wake_up_sb">Wake Somebody Up</string>
+    <string name="today">today</string>
 
 </resources>

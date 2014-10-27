@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 public class log_in extends ActionBarActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +49,7 @@ public class log_in extends ActionBarActivity {
                     editor.putString("password", password);
                     editor.commit();
                     Toast.makeText(getApplicationContext(), "Username and Password saved", Toast.LENGTH_SHORT).show();
+
                 }
                 main_intent.putExtra("user", user_name);
                 main_intent.putExtra("password", password);

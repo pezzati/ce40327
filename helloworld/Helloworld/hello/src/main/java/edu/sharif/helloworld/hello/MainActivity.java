@@ -15,10 +15,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -27,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Calendar;
 
@@ -57,6 +60,7 @@ public class MainActivity extends ActionBarActivity {
     private TextView min_textview;
 
     private Button call_button;
+    private ProgressBar alarm_progressbar;
     private EditText phone_text;
     static final int DATE_DIALOG = 0;
 
@@ -84,10 +88,13 @@ public class MainActivity extends ActionBarActivity {
         protected void onPreExecute() {
             httpClient = new DefaultHttpClient();
             url = "http://wake.huri.ir/wake/?user=";
+            alarm_progressbar.setVisibility(View.VISIBLE);
+            alarm_progressbar.setIndeterminate(true);
         }
 
         @Override
         protected String doInBackground(String... strings) {
+
             String res = "";
             url = url + URLEncoder.encode(strings[0]) + "&pass=" + URLEncoder.encode(strings[1]) + "&d=" + URLEncoder.encode(strings[2]) + "&t=" + URLEncoder.encode(strings[3]) + "&p=" + URLEncoder.encode(strings[4]);
             try {
@@ -100,10 +107,19 @@ public class MainActivity extends ActionBarActivity {
                 else{
                     res = convertInputStreamToString(inputStream);
                 }
-            } catch (IOException e) {
+            }catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-                System.out.println("Exception in sending req" + e.getMessage());
-                Toast.makeText(getApplicationContext(),"Check your network connection", Toast.LENGTH_LONG).show();
+                res = "-1";
+                System.out.println("Exception in sending req " + e.getMessage());
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+                res = "-1";
+                System.out.println("Exception in sending req " + e.getMessage());
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+                res = "-1";
+                System.out.println("Exception in sending req " + e.getMessage());
             }
             return res;
         }
@@ -111,7 +127,12 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(Object o) {
             String input = (String) o;
-            //System.out.println("###" + input);
+            alarm_progressbar.setIndeterminate(false);
+            alarm_progressbar.setVisibility(View.INVISIBLE);
+            if(input.equals("-1")){
+                Toast.makeText(getApplicationContext(), "Check your internet connection", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if(input == null){
                 Toast.makeText(getApplicationContext(), "Something was wrong. Please try later", Toast.LENGTH_SHORT).show();
                 return;
@@ -141,6 +162,8 @@ public class MainActivity extends ActionBarActivity {
         protected void onPreExecute() {
             httpClient = new DefaultHttpClient();
             url = "http://wake.huri.ir/call/?user=";
+            alarm_progressbar.setVisibility(View.VISIBLE);
+            alarm_progressbar.setIndeterminate(true);
         }
 
         @Override
@@ -158,16 +181,37 @@ public class MainActivity extends ActionBarActivity {
                 else{
                     res = convertInputStreamToString(inputStream);
                 }
-            } catch (IOException e) {
+            } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-                System.out.println("Exception in sending req" + e.getMessage());
+                res = "-1";
+                System.out.println("Exception in sending req " + e.getMessage());
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+                res = "-1";
+                System.out.println("Exception in sending req " + e.getMessage());
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+                res = "-1";
+                System.out.println("Exception in sending req " + e.getMessage());
             }
             return res;
         }
 
         @Override
+        protected void onProgressUpdate(Object... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
         protected void onPostExecute(Object o) {
             String input = (String) o;
+            alarm_progressbar.setIndeterminate(false);
+            alarm_progressbar.setVisibility(View.INVISIBLE);
+            if(input.equals("-1")){
+                Toast.makeText(getApplicationContext(), "Check your internet connection", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if(input == null){
                 Toast.makeText(getApplicationContext(), "Something was wrong. Please try later.", Toast.LENGTH_SHORT).show();
                 return;
@@ -235,6 +279,13 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //
+        alarm_progressbar = (ProgressBar) findViewById(R.id.alarm_progressBar);
+        alarm_progressbar.setVisibility(View.INVISIBLE);
+
+
+
+
         //Get username and password from intent
         user_name = getIntent().getStringExtra("user");
         password = getIntent().getStringExtra("password");
@@ -253,6 +304,13 @@ public class MainActivity extends ActionBarActivity {
 
         final Calendar calendar = Calendar.getInstance();
 
+        Button today_button = (Button) findViewById(R.id.today_button);
+        today_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                today();
+            }
+        });
         //time
         inc_hour = (Button) findViewById(R.id.inc_hour_button);
         hour_textview = (TextView) findViewById(R.id.hour_text);

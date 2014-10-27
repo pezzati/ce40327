@@ -17,5 +17,6 @@
     <string name="user_pass_saved">User name and Passworrd saved</string>
     <string name="select_date">select</string>
     <string name="action_log_in">Username</string>
+    <string name="log_in">Login</string>
 
 </resources>

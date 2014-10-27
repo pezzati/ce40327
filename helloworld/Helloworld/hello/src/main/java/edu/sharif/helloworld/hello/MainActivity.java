@@ -61,6 +61,17 @@ public class MainActivity extends ActionBarActivity {
 
     private Button wakeUp_button;
 
+    private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener(){
+        public void onDateSet(DatePicker view, int year, int month, int day){
+            pYear = year;
+            pMonth = month;
+            pDay = day;
+            updateDisplay();
+
+        }
+    };
+
+
 
     private class Get_call extends AsyncTask<String, Object, Object>{
 
@@ -187,17 +198,6 @@ public class MainActivity extends ActionBarActivity {
         return result;
 
     }
-
-
-    private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener(){
-        public void onDateSet(DatePicker view, int year, int month, int day){
-            pYear = year;
-            pMonth = month;
-            pDay = day;
-            updateDisplay();
-
-        }
-    };
 
 
     private void updateDisplay(){

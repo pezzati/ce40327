@@ -30,11 +30,11 @@ public class log_in extends ActionBarActivity {
         final Intent main_intent = new Intent(log_in.this, MainActivity.class);
 
         if(sharedPreferences.contains("user") && sharedPreferences.contains("password")){
-            main_intent.putExtra("user", sharedPreferences.getString("user",""));
-            main_intent.putExtra("password", sharedPreferences.getString("password",""));
+            //main_intent.putExtra("user", sharedPreferences.getString("user",""));
+            //main_intent.putExtra("password", sharedPreferences.getString("password",""));
             //log_in.this.startActivity(main_intent);
-            //user_text.setText(sharedPreferences.getString("user", ""));
-            //pass_text.setText(sharedPreferences.getString("password", ""));
+            user_text.setText(sharedPreferences.getString("user", ""));
+            pass_text.setText(sharedPreferences.getString("password", ""));
 
 
         }

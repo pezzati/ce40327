@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +45,7 @@ public class MainActivity extends ActionBarActivity {
     private int hour;
     private int min;
 
-    private Button date_button;
+    private ImageButton date_button;
     private TextView date_textview;
 
     private Button inc_hour;
@@ -59,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
     private EditText phone_text;
     static final int DATE_DIALOG = 0;
 
-    private Button wakeUp_button;
+    private ImageButton wakeUp_button;
 
     private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener(){
         public void onDateSet(DatePicker view, int year, int month, int day){
@@ -241,7 +242,7 @@ public class MainActivity extends ActionBarActivity {
 
         //date
         date_textview = (TextView) findViewById(R.id.date_textview);
-        date_button = (Button) findViewById(R.id.date_button);
+        date_button = (ImageButton) findViewById(R.id.date_button);
         date_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -318,7 +319,7 @@ public class MainActivity extends ActionBarActivity {
         });
 
         //Wake
-        wakeUp_button = (Button) findViewById(R.id.wakeUp_button);
+        wakeUp_button = (ImageButton) findViewById(R.id.wakeUp_button);
         wakeUp_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
